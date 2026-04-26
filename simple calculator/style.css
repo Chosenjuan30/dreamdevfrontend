@@ -1,0 +1,185 @@
+/* ============================================================
+   Smart Calculator — style.css
+   Fixes:
+   - Proper grid alignment for all button sizes
+   - Cleaner display with expression + result rows
+   - Smooth hover / active press feedback
+   - Consistent sizing that can't overflow
+   ============================================================ */
+
+/* ---------- Reset & base ---------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #0f172a;
+    font-family: Arial, sans-serif;
+}
+
+/* ---------- Calculator shell ---------- */
+.calculator {
+    background: #1e293b;
+    padding: 24px 20px 20px;
+    border-radius: 16px;
+    width: 320px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------- Title ---------- */
+.calculator h2 {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+
+/* ---------- Display panel ---------- */
+.display-panel {
+    background: #0f172a;
+    border-radius: 10px;
+    padding: 14px 14px 10px;
+    margin-bottom: 16px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 4px;
+    overflow: hidden;
+}
+
+/* Small expression preview line */
+#expression {
+    font-size: 13px;
+    color: #64748b;
+    min-height: 18px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+    /* direction trick keeps overflow on the left */
+    direction: rtl;
+    unicode-bidi: plaintext;
+}
+
+/* Main result / entry display */
+#display {
+    font-size: 32px;
+    font-weight: 600;
+    color: #f8fafc;
+    text-align: right;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    direction: rtl;
+    unicode-bidi: plaintext;
+    /* Shrink text for long numbers */
+    transition: font-size 0.1s;
+}
+
+#display.small  { font-size: 22px; }
+#display.xsmall { font-size: 16px; }
+
+/* Dim the display when showing a result */
+.display-panel.result #display {
+    color: #a3e635;
+}
+
+/* ---------- Button grid ---------- */
+.buttons {
+    display: grid;
+    /* 4 equal columns */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+/* ---------- Base button ---------- */
+button {
+    height: 58px;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    background: #334155;
+    color: #e2e8f0;
+    cursor: pointer;
+    /* Press-down animation */
+    transition: background 0.15s, transform 0.08s, box-shadow 0.08s;
+    /* Prevents text selection on rapid clicks */
+    user-select: none;
+    -webkit-user-select: none;
+    /* Ensure button content is centred */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover {
+    background: #475569;
+}
+
+button:active {
+    transform: scale(0.94);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* Flash class applied briefly on keyboard press */
+button.flash {
+    background: #64748b !important;
+}
+
+/* ---------- Button variants ---------- */
+
+/* Operator: blue */
+.operator {
+    background: #0369a1;
+    color: #e0f2fe;
+}
+.operator:hover  { background: #0284c7; }
+
+/* Equals: green */
+.equals {
+    background: #15803d;
+    color: #dcfce7;
+    /* Span full height of rows 4–5 in the grid */
+    grid-row: span 2;
+    height: 100%;          /* fills both row heights + gap */
+}
+.equals:hover { background: #16a34a; }
+
+/* Action (C / DEL): red */
+.action {
+    background: #b91c1c;
+    color: #fee2e2;
+}
+.action:hover { background: #dc2626; }
+
+/* Percent / extra function */
+.fn {
+    background: #475569;
+    color: #cbd5e1;
+}
+.fn:hover { background: #64748b; }
+
+/* Zero spans 2 columns */
+.zero {
+    grid-column: span 2;
+}
+
+/* ---------- Responsive tweak ---------- */
+@media (max-width: 360px) {
+    .calculator { width: 290px; padding: 18px 14px 14px; }
+    button { height: 50px; font-size: 16px; }
+    #display { font-size: 26px; }
+}
